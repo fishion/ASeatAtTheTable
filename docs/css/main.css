@@ -1,0 +1,63 @@
+
+nav {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  border: solid rgb(233,233,233);
+  border-width: 0 2px 0 0;
+}
+
+main {
+  margin-left: 300px;
+  padding: 2em;
+}
+
+
+/* Styling for expanding summary/details sections */
+
+details {
+  position: relative;
+  padding-bottom: 1.5em;
+}
+details summary {
+  position: absolute;
+  bottom: 0;
+  list-style-image: none;
+  outline: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+summary::-webkit-details-marker {
+  background: none;
+  color: transparent;
+}
+details summary::before {
+  content: attr(data-close);
+  position: relative;
+  left:0;
+  top:-2em;
+  opacity: 0;
+}
+details:not([open]) summary::before {
+  content: attr(data-close);
+  opacity: 1;
+  top:0;
+}
+details summary::after {
+  content: attr(data-open);
+  position: absolute;
+  left:0;
+  top:2em;
+  opacity: 0;
+}
+details[open] summary::after {
+  content: attr(data-open);
+  opacity: 1;
+  top:0;
+}
+details summary::after,
+details summary::before {
+  display: inline-block;
+  transition: all .4s ease-in-out;
+  transform-origin: center bottom;
+}
