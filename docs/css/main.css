@@ -1,7 +1,31 @@
 /* delcare variables */
 :root {
   --sidenav_width: 300px;
+  --heading-colour: rgb(27,27,27);
+  --text-colour: rgb(94,94,94);
   --border-colour: rgb(233,233,233);
+  --highlight-colour: #C25623;
+}
+
+/* Basic styles */
+body {
+  font-family: 'Quicksand', sans-serif;
+  color: var(--text-colour);
+}
+h1,h2,h3 {
+  color: var(--heading-colour);
+  letter-spacing: 1.5px;
+}
+h1 {
+  font-size: 1em;
+}
+h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2em;
+  text-transform: uppercase; 
+}
+p, li {
+  line-height: 1.5em;
 }
 
 /* Page structure */
@@ -18,12 +42,33 @@ main {
   padding: 2em;
 }
 
+/* Navigation element styles */
+nav {
+  letter-spacing: 1.5px;
+}
+nav ul {
+  list-style: none;
+}
+nav ul li {
+  margin-bottom: 1em;
+}
+nav ul a {
+  text-decoration: none;
+  color: var(--text-colour);
+}
+nav ul a:hover {
+  color: var(--highlight-colour);
+}
+nav ul a.selected {
+  font-weight:700;
+  color: var(--highlight-colour);
+}
 
 /* Styling for homepage section blocks */
 main > section {
   float: left;
-  width: 40%;
-  max-width: 400px;
+  width: 30%;
+  max-width: 365px;
   margin-bottom: 1em;
   box-sizing: border-box;
   text-align: center;
@@ -31,13 +76,13 @@ main > section {
 }
 main > section:nth-child(odd) {
   clear: left;
-  --section-width: min(40%, 400px);
+  --section-width: min(30%, 365px);
   margin-left: calc(50% - var(--section-width) - 1em);
   margin-right: 1em;
 }
 main > section:nth-child(even) {
   margin-left: 1em;
-  --section-width: min(40%, 400px);
+  --section-width: min(30%, 365px);
   margin-right: calc(50% - var(--section-width) - 1em);
 }
 main > section img {

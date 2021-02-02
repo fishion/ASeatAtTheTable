@@ -28,6 +28,9 @@
   <meta name="theme-color" content="{{site.themeColour}}">
   <link rel="shortcut icon" type="image/jpg" href="img/favicon.jpg"/>
 
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Quicksand:wght@300;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
@@ -36,10 +39,10 @@
 
   <nav>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="our-team.html">Our Team</a></li>
-      <li><a href="contact-us.html">Contact Us</a></li>
-      <li><a href="funders.html">Funders</a></li>
+      <li><a href="index.html"{{#if pagename.index}} class="selected"{{/if}}>Home</a></li>
+      <li><a href="our-team.html"{{#if pagename.our-team}} class="selected"{{/if}}>Our Team</a></li>
+      <li><a href="contact-us.html"{{#if pagename.contact-us}} class="selected"{{/if}}>Contact Us</a></li>
+      <li><a href="funders.html"{{#if pagename.funders}} class="selected"{{/if}}>Funders</a></li>
     </ul>
   </nav>
 
