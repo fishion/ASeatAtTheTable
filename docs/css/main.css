@@ -1,26 +1,73 @@
+/* delcare variables */
+:root {
+  --sidenav_width: 300px;
+  --border-colour: rgb(233,233,233);
+}
 
+/* Page structure */
 nav {
   position: fixed;
-  width: 300px;
+  width: var(--sidenav_width);
   height: 100%;
-  border: solid rgb(233,233,233);
+  border: solid var(--border-colour);
   border-width: 0 2px 0 0;
 }
 
 main {
-  margin-left: 300px;
+  margin-left: var(--sidenav_width);
   padding: 2em;
 }
 
 
-/* Styling for expanding summary/details sections */
+/* Styling for homepage section blocks */
+main > section {
+  float: left;
+  width: 40%;
+  max-width: 400px;
+  margin-bottom: 1em;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+}
+main > section:nth-child(odd) {
+  clear: left;
+  --section-width: min(40%, 400px);
+  margin-left: calc(50% - var(--section-width) - 1em);
+  margin-right: 1em;
+}
+main > section:nth-child(even) {
+  margin-left: 1em;
+  --section-width: min(40%, 400px);
+  margin-right: calc(50% - var(--section-width) - 1em);
+}
+main > section img {
+  width: 100%;
+  transition: all .4s ease-in-out;
+  transform-origin: center bottom;
+}
+main > section img:hover {
+  transform: scale(1.1, 1.1);
+}
+main > section p,
+main > section ul {
+  margin: .5em;
+}
+main > section ul {
+  text-align: left;
+}
+main > section details ul {
+  position: relative;
+  top: -.5em
+}
 
+/* Styling for expanding summary/details sections */
 details {
   position: relative;
-  padding-bottom: 1.5em;
+  padding-bottom: 1em;
 }
 details summary {
   position: absolute;
+  width: 100%;
   bottom: 0;
   list-style-image: none;
   outline: none;
@@ -31,33 +78,29 @@ summary::-webkit-details-marker {
   background: none;
   color: transparent;
 }
+details summary::before,
+details summary::after {
+  display: inline-block;
+  position: absolute;
+  left:0; right:0;
+  opacity: 0;
+  transition: all .4s ease-in-out;
+}
 details summary::before {
   content: attr(data-close);
-  position: relative;
-  left:0;
-  top:-2em;
-  opacity: 0;
+  top: -2em;
+}
+details summary::after {
+  content: attr(data-open);
+  top: 2em;
 }
 details:not([open]) summary::before {
   content: attr(data-close);
   opacity: 1;
-  top:0;
-}
-details summary::after {
-  content: attr(data-open);
-  position: absolute;
-  left:0;
-  top:2em;
-  opacity: 0;
+  top: 0;
 }
 details[open] summary::after {
   content: attr(data-open);
   opacity: 1;
-  top:0;
-}
-details summary::after,
-details summary::before {
-  display: inline-block;
-  transition: all .4s ease-in-out;
-  transform-origin: center bottom;
+  top: 0;
 }
