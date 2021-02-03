@@ -3,7 +3,7 @@
   --sidenav_width: 320px;
   --h2-colour: rgb(27,27,27);
   --text-colour: rgb(94,94,94);
-  --border-colour: rgb(233,233,233);
+  --border-colour: rgb(244,244,244);
   --highlight-colour: #C25623;
 }
 
@@ -31,6 +31,44 @@ p, li {
   line-height: 1.5em;
   font-size: 1.1em;
 }
+form div {
+  position: relative;
+  width: 80%;
+  margin: 1em auto;
+}
+form input,
+form textarea {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 3em;
+  background: var(--border-colour);
+  border: 1px solid var(--border-colour);
+  padding: 22px 1em 10px;
+}
+form textarea {
+  height: 10em;
+}
+form input:focus,
+form textarea:focus {
+  outline-style: none;
+  border-color: var(--highlight-colour);
+}
+form label {
+  position: absolute;
+  top: 16px; left: 17px;
+  pointer-events: none;
+  transition: all .2s ease-in-out;
+}
+form input:focus + label,
+form input.hascontent + label,
+form textarea:focus + label,
+form textarea.hascontent + label {
+  font-size: .7em;
+  top: 4px;
+  color: var(--highlight-colour)
+}
+
 
 /* Page structure */
 header {
