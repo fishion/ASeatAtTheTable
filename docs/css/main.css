@@ -31,10 +31,13 @@ p, li {
   line-height: 1.5em;
   font-size: 1.1em;
 }
+
+/* Form styles */
 form div {
   position: relative;
   width: 80%;
   margin: 1em auto;
+  text-align: center;
 }
 form input,
 form textarea {
@@ -67,6 +70,21 @@ form textarea.hascontent + label {
   font-size: .7em;
   top: 4px;
   color: var(--highlight-colour)
+}
+form button {
+  background: none;
+  border: 2px solid black;
+  padding: 1em 1.7em 1em 2em;
+  font-size: .8em;
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+form button:hover {
+  color: white;
+  background-color: black;
+  transition: all .4s ease-in-out;
 }
 
 
@@ -175,6 +193,10 @@ main.index > section details ul {
   top: -.5em
 }
 
+/* funders page specific formatting */
+main.funders img {
+  max-width: 60%;
+}
 
 /* Styling for expanding summary/details sections */
 details {
