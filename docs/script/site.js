@@ -1,3 +1,16 @@
+// Add 'open' class to popout menu when hamburger clicked
+const menuEvents = () => {
+  const opener = document.getElementsByClassName('hamburger')[0];
+  const closer = document.getElementsByClassName('menuX')[0];
+  const popoutMenu = document.getElementsByClassName('popout')[0];
+  opener.addEventListener('click', () => {
+    popoutMenu.classList.add('open')
+  })
+  closer.addEventListener('click', () => {
+    popoutMenu.classList.remove('open')
+  })
+}
+
 // Add class to input/testarea element on keyup if the value
 // contains any non-whitespace characters.
 // Could do this all in CSS with pseudo selector "input:valid"
@@ -15,5 +28,6 @@ const contactFormEvents = () => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  contactFormEvents()
+  menuEvents();
+  contactFormEvents();
 });

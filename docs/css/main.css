@@ -1,13 +1,23 @@
-/* delcare variables */
+/* Variables */
+/*
+  Media query breakpoints
+  768px   : phone <-> tablet              : content view changes
+  1024px : tablet <-> small desktop       : medium sized logo, menu popout not full width
+  1280px : small desktop <-> full desktop : side menu
+*/
 :root {
-  --sidenav_width: 320px;
+  --sidenav-width: 320px;
   --h2-colour: rgb(27,27,27);
   --text-colour: rgb(94,94,94);
   --border-colour: rgb(244,244,244);
   --highlight-colour: #C25623;
 }
 
-/* Basic styles */
+
+/*****************
+ *  Basic styles
+ */
+
 body {
   font-family: 'Quicksand', sans-serif;
   color: var(--text-colour);
@@ -87,33 +97,95 @@ form button:hover {
   transition: all .4s ease-in-out;
 }
 
+/*******************
+ *  Page structure
+ */
 
-/* Page structure */
 header {
+  position: relative;
+  width: 100%;
+  margin: 34px 0 15px;
+  border: none;
+}
+header .hamburger {
+  position: absolute;
+  top: 59px;
+  left: 3em;
+  width: 3em;
+  height: 3em;
+  fill: var(--text-colour);
+  cursor: pointer;
+}
+header .logo {
+  display: block;
+  width: 166px;
+  margin: 0 auto;
+}
+header nav {
+  display: none;
+}
+nav.popout {
   position: fixed;
-  width: var(--sidenav_width);
+  top: 0;
+  left: calc( -5px - var(--sidenav-width));
+  width: var(--sidenav-width);
   height: 100%;
+  background: white;
+  opacity: 0;
   border: solid var(--border-colour);
   border-width: 0 2px 0 0;
+  transition: all .4s ease-in-out;
 }
+nav.popout.open {
+  left: 0;
+  opacity: 1;
+  transition: all .4s ease-in-out;
+}
+nav.popout .menuX {
+  display: block;
+  margin: 80px auto;
+  width: 3em;
+  height: 3em;
+  fill: var(--text-colour);
+  cursor: pointer;
+}
+@media only screen and (min-width: 1280px) {
+  header {
+    position: fixed;
+    width: var(--sidenav-width);
+    height: 100%;
+    margin: 0;
+    border: solid var(--border-colour);
+    border-width: 0 2px 0 0;
+  }
+  header .hamburger {
+    display: none;
+  }
+  header img.logo {
+    width: 224px;
+    margin: 5em auto;
+  }
+  header nav {
+    display: block;
+  }
+  nav.popout {
+    display: none;
+  }
+}
+
 
 main {
-  margin-left: var(--sidenav_width);
   padding: 2em;
 }
-
-main > img {
-  display: block;
-  margin: 0 auto;
-  max-width: 90%;
+@media only screen and (min-width: 1280px) {
+  main {
+    margin-left: var(--sidenav-width);
+  }
 }
+
 
 /* Header and Nav element styles */
-header img {
-  display: block;
-  width: 224px;
-  margin: 5em auto;
-}
+
 nav {
   letter-spacing: 1.5px;
 }
@@ -137,6 +209,11 @@ nav ul a.selected {
   color: var(--highlight-colour);
 }
 
+
+/**********************
+ *  Reusable components
+ */
+
 /* Standard section block styling */
 main > section {
   float: left;
@@ -154,48 +231,6 @@ main > section:nth-of-type(odd) {
 main > section:nth-of-type(even) {
   margin-left: 2%;
   margin-right: 3%;
-}
-
-/* Styling for narrower homepage section blocks */
-main.index > section {
-  margin-top: 3em;
-  width: 30%;
-  max-width: 365px;
-}
-main.index > section:nth-of-type(odd) {
-  clear: left;
-  --section-width: min(30%, 365px);
-  margin-left: calc(50% - var(--section-width) - 1em);
-  margin-right: 1em;
-}
-main.index > section:nth-of-type(even) {
-  margin-left: 1em;
-  --section-width: min(30%, 365px);
-  margin-right: calc(50% - var(--section-width) - 1em);
-}
-main.index > section img {
-  width: 100%;
-  transition: all .4s ease-in-out;
-  transform-origin: center bottom;
-}
-main.index > section img:hover {
-  transform: scale(1.1, 1.1);
-}
-main.index > section p,
-main.index > section ul {
-  margin: .5em;
-}
-main.index > section ul {
-  text-align: left;
-}
-main.index > section details ul {
-  position: relative;
-  top: -.5em
-}
-
-/* funders page specific formatting */
-main.funders img {
-  max-width: 60%;
 }
 
 /* Styling for expanding summary/details sections */
@@ -243,3 +278,56 @@ details[open] summary::after {
   opacity: 1;
   top: 0;
 }
+
+/**********************
+ * Page specific styles
+ */
+
+ /* Index page specific styles */
+main.index > img {
+  display: block;
+  margin: 0 auto;
+  max-width: 90%;
+}
+/* Index page narrower homepage section blocks */
+main.index > section {
+  margin-top: 3em;
+  width: 30%;
+  max-width: 365px;
+}
+main.index > section:nth-of-type(odd) {
+  clear: left;
+  --section-width: min(30%, 365px);
+  margin-left: calc(50% - var(--section-width) - 1em);
+  margin-right: 1em;
+}
+main.index > section:nth-of-type(even) {
+  margin-left: 1em;
+  --section-width: min(30%, 365px);
+  margin-right: calc(50% - var(--section-width) - 1em);
+}
+main.index > section img {
+  width: 100%;
+  transition: all .4s ease-in-out;
+  transform-origin: center bottom;
+}
+main.index > section img:hover {
+  transform: scale(1.1, 1.1);
+}
+main.index > section p,
+main.index > section ul {
+  margin: .5em;
+}
+main.index > section ul {
+  text-align: left;
+}
+main.index > section details ul {
+  position: relative;
+  top: -.5em
+}
+
+/* funders page specific formatting */
+main.funders img {
+  max-width: 60%;
+}
+
