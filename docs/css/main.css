@@ -265,6 +265,9 @@ main > section {
   box-sizing: border-box;
   text-align: center;
 }
+main > section img {
+  max-width: 95%;
+}
 @media only screen and (min-width: 768px) {
   main > section {
     float: left;
@@ -336,33 +339,35 @@ details[open] summary::after {
  /* Index page specific styles */
 main.index > img {
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 2em;
   max-width: 90%;
 }
 /* Index page narrower homepage section blocks */
-main.index > section {
-  margin-top: 3em;
-  width: 30%;
-  max-width: 365px;
-}
-main.index > section:nth-of-type(odd) {
-  clear: left;
-  --section-width: min(30%, 365px);
-  margin-left: calc(50% - var(--section-width) - 1em);
-  margin-right: 1em;
-}
-main.index > section:nth-of-type(even) {
-  margin-left: 1em;
-  --section-width: min(30%, 365px);
-  margin-right: calc(50% - var(--section-width) - 1em);
-}
-main.index > section img {
-  width: 100%;
-  transition: all .4s ease-in-out;
-  transform-origin: center bottom;
-}
-main.index > section img:hover {
-  transform: scale(1.1, 1.1);
+@media only screen and (min-width: 768px) {
+  main.index > section {
+    margin-top: 3em;
+    width: 30%;
+    max-width: 365px;
+  }
+  main.index > section:nth-of-type(odd) {
+    clear: left;
+    --section-width: min(30%, 365px);
+    margin-left: calc(50% - var(--section-width) - 1em);
+    margin-right: 1em;
+  }
+  main.index > section:nth-of-type(even) {
+    margin-left: 1em;
+    --section-width: min(30%, 365px);
+    margin-right: calc(50% - var(--section-width) - 1em);
+  }
+  main.index > section img {
+    width: 100%;
+    transition: all .4s ease-in-out;
+    transform-origin: center bottom;
+  }
+  main.index > section img:hover {
+    transform: scale(1.1, 1.1);
+  }
 }
 main.index > section p,
 main.index > section ul {
@@ -375,6 +380,7 @@ main.index > section details ul {
   position: relative;
   top: -.5em
 }
+
 
 /* funders page specific formatting */
 main.funders img {
