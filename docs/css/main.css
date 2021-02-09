@@ -150,6 +150,7 @@ nav ul a.selected {
 }
 nav.popout {
   position: fixed;
+  z-index: 10;
   top: 0;
   left: -100%;
   width: 100%;
@@ -214,7 +215,7 @@ nav.popout .menuX {
   }
 }
 
-
+/* main area layout styling */
 main {
   padding: 2em;
 }
@@ -223,9 +224,6 @@ main {
     margin-left: var(--sidenav-width);
   }
 }
-
-
-
 
 
 /**********************
