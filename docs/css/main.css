@@ -47,7 +47,13 @@ form div {
   position: relative;
   width: 80%;
   margin: 1em auto;
+  font-size: .8em;
   text-align: center;
+}
+@media only screen and (min-width: 768px) {
+  form div {
+    font-size: 1em;
+  }
 }
 form input,
 form textarea {
@@ -57,7 +63,7 @@ form textarea {
   height: 3em;
   background: var(--border-colour);
   border: 1px solid var(--border-colour);
-  padding: 22px 1em 10px;
+  padding: 1.5em 1em 10px;
 }
 form textarea {
   height: 10em;
@@ -69,9 +75,15 @@ form textarea:focus {
 }
 form label {
   position: absolute;
-  top: 16px; left: 17px;
+  top: 1em; left: 14px;
+  text-align: left;
   pointer-events: none;
   transition: all .2s ease-in-out;
+}
+@media only screen and (min-width: 768px) {
+  form label {
+    left: 17px;
+  }
 }
 form input:focus + label,
 form input.hascontent + label,
@@ -344,6 +356,8 @@ main.index > section details ul {
 
 /* funders page specific formatting */
 main.funders img {
+  display: block;
   max-width: 60%;
+  margin: 0 auto;
 }
 
