@@ -345,28 +345,41 @@ main.index > img {
 /* Index page narrower homepage section blocks */
 @media only screen and (min-width: 768px) {
   main.index > section {
-    margin-top: 3em;
-    width: 30%;
-    max-width: 365px;
+    margin: 0 0 3em;
+    width: 46%;
   }
   main.index > section:nth-of-type(odd) {
     clear: left;
-    --section-width: min(30%, 365px);
-    margin-left: calc(50% - var(--section-width) - 1em);
-    margin-right: 1em;
+    margin-right: 3%;
   }
   main.index > section:nth-of-type(even) {
-    margin-left: 1em;
-    --section-width: min(30%, 365px);
-    margin-right: calc(50% - var(--section-width) - 1em);
+    margin-left: 3%;
   }
   main.index > section img {
     width: 100%;
+    max-width: 100%;
     transition: all .4s ease-in-out;
     transform-origin: center bottom;
   }
   main.index > section img:hover {
     transform: scale(1.1, 1.1);
+  }
+}
+@media only screen and (min-width: 1024px) {
+  main.index > section {
+    width: 35%;
+    max-width: 400px;
+  }
+  main.index > section:nth-of-type(odd) {
+    clear: left;
+    --section-width: min(35%, 400px);
+    margin-left: calc(50% - var(--section-width) - 1em);
+    margin-right: 1em;
+  }
+  main.index > section:nth-of-type(even) {
+    margin-left: 1em;
+    --section-width: min(35%, 400px);
+    margin-right: calc(50% - var(--section-width) - 1em);
   }
 }
 main.index > section p,
