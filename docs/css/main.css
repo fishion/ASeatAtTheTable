@@ -104,13 +104,13 @@ form button:hover {
 header {
   position: relative;
   width: 100%;
-  margin: 34px 0 15px;
+  margin: 34px 0 16px;
   border: none;
 }
 header .hamburger {
   position: absolute;
-  top: 59px;
-  left: 3em;
+  top: 18px;
+  left: 2em;
   width: 3em;
   height: 3em;
   fill: var(--text-colour);
@@ -118,17 +118,41 @@ header .hamburger {
 }
 header .logo {
   display: block;
-  width: 166px;
+  width: 85px;
   margin: 0 auto;
 }
 header nav {
   display: none;
 }
+/* Header and Nav element styles */
+nav {
+  letter-spacing: 1.5px;
+}
+nav ul {
+  list-style: none;
+  margin: 0 4em;
+  padding:0;
+}
+nav ul li {
+  margin-bottom: 1em;
+  text-align: center;
+}
+nav ul a {
+  text-decoration: none;
+  color: var(--text-colour);
+}
+nav ul a:hover {
+  color: var(--highlight-colour);
+}
+nav ul a.selected {
+  font-weight:700;
+  color: var(--highlight-colour);
+}
 nav.popout {
   position: fixed;
   top: 0;
-  left: calc( -5px - var(--sidenav-width));
-  width: var(--sidenav-width);
+  left: -100%;
+  width: 100%;
   height: 100%;
   background: white;
   opacity: 0;
@@ -149,6 +173,20 @@ nav.popout .menuX {
   fill: var(--text-colour);
   cursor: pointer;
 }
+@media only screen and (min-width: 768px) {
+  header .hamburger {
+    top: 59px;
+    left: 3em;
+  }
+  header .logo {
+    top: 59px;
+    width: 166px;
+  }
+  nav.popout {
+    left: calc( -5px - var(--sidenav-width));
+    width: var(--sidenav-width);
+  }
+}
 @media only screen and (min-width: 1280px) {
   header {
     position: fixed;
@@ -161,12 +199,15 @@ nav.popout .menuX {
   header .hamburger {
     display: none;
   }
-  header img.logo {
+  header .logo {
     width: 224px;
     margin: 5em auto;
   }
   header nav {
     display: block;
+  }
+  nav ul li {
+    text-align: left;
   }
   nav.popout {
     display: none;
@@ -184,30 +225,7 @@ main {
 }
 
 
-/* Header and Nav element styles */
 
-nav {
-  letter-spacing: 1.5px;
-}
-nav ul {
-  list-style: none;
-  margin: 0 4em;
-  padding:0;
-}
-nav ul li {
-  margin-bottom: 1em;
-}
-nav ul a {
-  text-decoration: none;
-  color: var(--text-colour);
-}
-nav ul a:hover {
-  color: var(--highlight-colour);
-}
-nav ul a.selected {
-  font-weight:700;
-  color: var(--highlight-colour);
-}
 
 
 /**********************
