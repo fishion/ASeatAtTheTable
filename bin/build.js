@@ -2,9 +2,10 @@
 "use strict";
 
 const path = require('path');
-const config = require('../config.json');
-const Handlebars = require('../../HandlebarsExtended/index')({
-  appRoot : path.resolve(__dirname, '..')
+const appRoot = path.resolve(__dirname, '..');
+const Handlebars = require('HandlebarsExtended')({
+  appRoot : appRoot
 });
 
+const config = require(path.resolve(appRoot, 'config.json'));
 Handlebars.buildSite(config)
