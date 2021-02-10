@@ -398,7 +398,8 @@ main.index > section details ul {
 
 
 /* funders page specific formatting */
-main.funders img {
+main.funders-and-friends img,
+main.events img {
   display: block;
   max-width: 60%;
   margin: 0 auto;
