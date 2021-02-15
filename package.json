@@ -1,29 +1,19 @@
 {
   "name": "aseatatthetable",
-  "version": "1.0.0",
   "description": "A website for https://aseatatthetable.org.uk/",
+  "version": "1.0.0",
+  "author": "A Monney",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fishion/ASeatAtTheTable.git"
+  },
   "main": "bin/build.js",
-  "bin": {
-    "aseatatthetable": "build.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
   "dependencies": {
     "handlebarsextended": "git+https://github.com/fishion/HandlebarsExtended.git"
   },
   "devDependencies": {},
   "scripts": {
     "build": "./bin/build.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fishion/ASeatAtTheTable.git"
-  },
-  "author": "A Monney",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/fishion/ASeatAtTheTable/issues"
-  },
-  "homepage": "https://github.com/fishion/ASeatAtTheTable#readme"
+  }
 }

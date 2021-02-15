@@ -1,14 +1,21 @@
 // Config
 const contactUsAPI = 'https://api.maytreehousestudios.co.uk/contact-us';
 const siteKey = {siteKey : 'aseatatthetable'}
-const requiredFields = [
-  { "name" : "name" },
+const expectedFormData = [
+  { "name" : "name",
+    "niceName" : "Name" },
   { "name" : "email",
-    "validation" : "email",
-    "required" : "Please enter an Email Address" },
-  { "name" : "whereHear" },
+    "niceName" : "Email",
+    "validation" : {
+      "type" : "email",
+      "error" : "Please enter a valid Email Address"
+    },
+    "required" : "No email address provided" },
+  { "name" : "whereHear",
+    "niceName" : "Where did you hear about us" },
   { "name" : "comment",
-    "required" : "Please enter your comment above"}
+    "niceName" : "Comment",
+    "required" : "No comment provided"}
 ]
 
 // Add 'open' class to popout menu when hamburger clicked
@@ -53,29 +60,32 @@ function clearFeedback (form) {
 function getFormData (form) {
   const formFields = form.getElementsByClassName('formField');
   const formData = [...formFields].reduce((fd, item) => {return {[item.name]: item.value, ...fd}}, {})
-  const errors = validateData(formData);
+  const [_, errors] = validateFormData(formData, expectedFormData);
   return [formData, errors];
 }
-function validateData (formData){
+function validateFormData (data, expectedData) {
   const errors = {};
-  requiredFields.forEach(field => {
-    if (formData[field.name]){
-      switch (field.validation){
+  const strings = [];
+  expectedData.forEach(field => {
+    if (data[field.name]){
+      switch (field.validation && field.validation.type){
+        case 'email':
+          if (!data[field.name].match(/.*@.*\..*/))
+          errors[field.name] = field.validation.error
+          break;
         case undefined:
           break;
-        case 'email':
-          if (!formData[field.name].match(/.*@.*\..*/))
-            errors[field.name] = `Please enter a valid Email Address`
-          break;
         default:
-          console.log(`Validation type '${field.validation}' not defined`)
-      }
-    } else if (field.required) {
+          throw(`Validation type '${field.validation}' not defined`)
+      };
+      strings.push(`${field.niceName || field.name} : ${data[field.name]}`);
+    } else if (field.required){
       errors[field.name] = field.required
     }
   })
-  return errors;
+  return [strings, errors];
 }
+
 function showErrors (error) {
   if (typeof error === 'string') {
     document.getElementById('form_generalError')
