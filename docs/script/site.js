@@ -39,9 +39,23 @@ function contactFormEvents () {
     }
   })
   const submit = form.getElementsByTagName('button')[0]
-  submit.addEventListener('click', async e => {postForm(form)})
+  submit.addEventListener('click', async e => {
+    clearFeedback(form)
+    postForm(form)
+  })
 }
 
+function clearFeedback (form) {
+  const errorTexts = form.getElementsByClassName('error');
+  const successTexts = form.getElementsByClassName('success');
+  [...errorTexts, ...successTexts].forEach(el => {el.remove()});
+}
+function getFormData (form) {
+  const formFields = form.getElementsByClassName('formField');
+  const formData = [...formFields].reduce((fd, item) => {return {[item.name]: item.value, ...fd}}, {})
+  const errors = validateData(formData);
+  return [formData, errors];
+}
 function validateData (formData){
   const errors = {};
   requiredFields.forEach(field => {
@@ -62,35 +76,32 @@ function validateData (formData){
   })
   return errors;
 }
-
 function showErrors (error) {
-  const generalError = document.getElementById('form_generalError').getElementsByClassName('error')[0];
   if (typeof error === 'string') {
-    generalError.innerHTML= `Error : ${error}`
+    document.getElementById('form_generalError')
+      .appendChild(feedbackElement(`Error : ${error}`, 'error'))
   } else {
-    generalError.innerHTML= `Please check errors below`;
+    document.getElementById('form_generalError')
+      .appendChild(feedbackElement('Please check errors below', 'error'))
     Object.keys(error).forEach(field => {
       document.getElementById(`formField_${field}`)
-        .getElementsByClassName('error')[0].innerHTML = error[field]
+        .appendChild(feedbackElement(error[field], 'error'))
     })
   }
 }
 function showSuccess (message) {
-  document.getElementById('form_generalError').getElementsByClassName('success')[0].innerHTML = message
+  document.getElementById('form_generalError')
+    .appendChild(feedbackElement(message, 'success'))
+}
+function feedbackElement (message, type) {
+  const p = document.createElement('p');
+  if (type) p.classList.add(type);
+  p.textContent = message;
+  return p;
 }
 
 async function postForm (form) {
-  // clear previous feedback displayed
-  const errorTexts = form.getElementsByClassName('error');
-  const successTexts = form.getElementsByClassName('success');
-  [...errorTexts, ...successTexts].forEach(el => {el.innerHTML = ''});
-
-  // get form data
-  const formFields = form.getElementsByClassName('formField');
-  const formData = [...formFields].reduce((fd, item) => {return {[item.name]: item.value, ...fd}}, {})
-
-  // validate the data
-  const errors = validateData(formData);
+  const [formData, errors] = getFormData(form)
   if (Object.keys(errors).length) return showErrors(errors);
 
   // do request
@@ -101,12 +112,11 @@ async function postForm (form) {
     cache: 'no-cache',
     body: JSON.stringify({ ...siteKey, ...formData })
   })
-  const status = response.status;
-  const data = await response.json();
+  const responseData = await response.json();
   
-  if (status == '400'){
-    showErrors(data.error)
-  } else if (status == '200') {
+  if (response.status == '400'){
+    showErrors(responseData.error)
+  } else if (response.status == '200') {
     showSuccess(`Feedback received - Thank you!`)
   }
 }
