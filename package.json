@@ -9,11 +9,13 @@
     "url": "git+https://github.com/fishion/ASeatAtTheTable.git"
   },
   "main": "bin/build.js",
-  "dependencies": {
-    "handlebarsextended": "git+https://github.com/fishion/HandlebarsExtended.git"
+  "dependencies": {},
+  "devDependencies": {
+    "handlebarsextended": "git+https://github.com/fishion/HandlebarsExtended.git",
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0"
   },
-  "devDependencies": {},
   "scripts": {
-    "build": "./bin/build.js"
+    "build": "./bin/build.js; webpack"
   }
 }
