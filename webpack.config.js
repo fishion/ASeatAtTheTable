@@ -2,6 +2,7 @@
 const path = require('path');
 module.exports = {
   entry: './templates/script/site.js',
+  // mode: 'development', devtool: false,
   mode: 'production',
   target: 'node',
   output: {
