@@ -1,12 +1,15 @@
 
 const path = require('path');
 module.exports = {
-  entry: './templates/script/site.js',
-  // mode: 'development', devtool: false,
-  mode: 'production',
+  entry: {
+    site : './templates/script/site.js',
+    formevents : './templates/script/formevents.js',
+  },
+  mode: 'development', devtool: false,
+  //mode: 'production',
   target: 'node',
   output: {
-    filename: 'site.js',
+    filename: '[name].js',
     path: path.join(__dirname, 'docs/script'),
     //libraryTarget: 'commonjs'
   }

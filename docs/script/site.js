@@ -1,1 +1,21 @@
-(()=>{var e={573:(e,t,a)=>{const n=a(258),r={siteKey:"aseatatthetable"},s=[{name:"name",niceName:"Name"},{name:"email",niceName:"Email",validation:{type:"email",error:"Please enter a valid Email Address"},required:"No email address provided"},{name:"whereHear",niceName:"Where did you hear about us"},{name:"comment",niceName:"Comment",required:"No comment provided"}];function o(e){"string"==typeof e?document.getElementById("form_generalError").appendChild(d(`Error : ${e}`,"error")):(document.getElementById("form_generalError").appendChild(d("Please check errors below","error")),Object.keys(e).forEach((t=>{document.getElementById(`formField_${t}`).appendChild(d(e[t],"error"))})))}function d(e,t){const a=document.createElement("p");return t&&a.classList.add(t),a.textContent=e,a}e.exports={addFieldHasValueClass:e=>{e.addEventListener("keyup",(e=>{e.target.value.match(/[^\s]/)?e.target.classList.add("hascontent"):e.target.classList.remove("hascontent")}))},addValidateAndSubmit:e=>{e.getElementsByTagName("button")[0].addEventListener("click",(async t=>{!function(e){[...e.getElementsByClassName("error"),...e.getElementsByClassName("success")].forEach((e=>{e.remove()}))}(e);const[a,i]=function(e){const t=[...e.getElementsByTagName("input"),...e.getElementsByTagName("textarea")].reduce(((e,t)=>({[t.name]:t.value,...e})),{}),[a,r]=n(t,s);return[t,r]}(e);if(Object.keys(i).length)return o(i);const m=await fetch("https://api.maytreehousestudios.co.uk/contact-us",{headers:{"Content-Type":"application/json"},method:"POST",mode:"cors",cache:"no-cache",body:JSON.stringify({...r,...a})}),c=await m.json();"400"==m.status?o(c.error):"200"==m.status&&("Feedback received - Thank you!",document.getElementById("form_generalError").appendChild(d("Feedback received - Thank you!","success")))}))}}},926:e=>{e.exports={openCloseSlideoutMenu:()=>{const e=document.getElementsByClassName("hamburger")[0],t=document.getElementsByClassName("menuX")[0],a=document.getElementsByClassName("popout")[0];e.addEventListener("click",(()=>{a.classList.add("open")})),t.addEventListener("click",(()=>{a.classList.remove("open")}))}}},258:e=>{e.exports=(e,t)=>{const a={},n=[];return t.forEach((t=>{if(e[t.name]){switch(t.validation&&t.validation.type){case"email":e[t.name].match(/.*@.*\..*/)||(a[t.name]=t.validation.error);break;case void 0:break;default:throw`Validation type '${t.validation}' not defined`}n.push(`${t.niceName||t.name} : ${e[t.name]}`)}else t.required&&(a[t.name]=t.required)})),[n,a]}}},t={};function a(n){if(t[n])return t[n].exports;var r=t[n]={exports:{}};return e[n](r,r.exports,a),r.exports}(()=>{a(926).openCloseSlideoutMenu();const e=a(573),t=document.getElementsByTagName("form")[0];t&&(e.addFieldHasValueClass(t),e.addValidateAndSubmit(t))})()})();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!**********************************!*\
+  !*** ./templates/script/site.js ***!
+  \**********************************/
+// Add events for slideout menu
+// load script with defer attribute to ensure DOM is loaded before execution
+
+const opener = document.getElementsByClassName('hamburger')[0];
+const closer = document.getElementsByClassName('menuX')[0];
+const popoutMenu = document.getElementsByClassName('popout')[0];
+
+opener.addEventListener('click', () => {
+  popoutMenu.classList.add('open')
+})
+
+closer.addEventListener('click', () => {
+  popoutMenu.classList.remove('open')
+})
+/******/ })()
+;

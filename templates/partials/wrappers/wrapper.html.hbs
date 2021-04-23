@@ -35,6 +35,12 @@
   <link rel="stylesheet" href="css/main.css">
 
   <script defer src="script/site.js"></script>
+
+  {{#if pagename.is.contact-us }}
+    <script defer src="script/formevents.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  {{/if}}
+
 </head>
 
 <body>

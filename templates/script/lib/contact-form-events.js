@@ -1,64 +1,36 @@
 const validateFormData  = require('./validate-form-data.js')
-
-// Config
-const contactUsAPI = 'https://api.maytreehousestudios.co.uk/contact-us';
-const siteKey = {siteKey : 'aseatatthetable'}
-const expectedFormData = [
-  { "name" : "name",
-    "niceName" : "Name" },
-  { "name" : "email",
-    "niceName" : "Email",
-    "validation" : {
-      "type" : "email",
-      "error" : "Please enter a valid Email Address"
-    },
-    "required" : "No email address provided" },
-  { "name" : "whereHear",
-    "niceName" : "Where did you hear about us" },
-  { "name" : "comment",
-    "niceName" : "Comment",
-    "required" : "No comment provided"}
-]
+const config = require('./config.json');
 
 module.exports = {
-  // Add class to input/testarea element on keyup if the value
-  // contains any non-whitespace characters.
-  // Could do this all in CSS with pseudo selector "input:valid"
-  // if all fields are required https://css-tricks.com/float-labels-css/
-  addFieldHasValueClass : (form) => {
-    form.addEventListener('keyup', e => {
-      if (e.target.value.match(/[^\s]/)) {
-        e.target.classList.add('hascontent')
-      } else {
-        e.target.classList.remove('hascontent')
-      }
-    })
+
+  // Form validation and recaptcha call
+  validateAndCaptcha : (form) => {
+    _clearFeedback(form);
+    const [_, errors] = validateFormData(_getFormData(form), config.expectedFormData)
+    if (Object.keys(errors).length) return _showErrors(errors);
+
+    grecaptcha.execute();
   },
-  // Form validation and submit behaviour
-  addValidateAndSubmit : (form) => {
-    const submit = form.getElementsByTagName('button')[0]
-    submit.addEventListener('click', async e => {
-      _clearFeedback(form);
 
-      const [formData, errors] = _getFormData(form);
-      if (Object.keys(errors).length) return _showErrors(errors);
-
-      // post the data to the contactus API
-      const response = await fetch(contactUsAPI, {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        body: JSON.stringify({ ...siteKey, ...formData })
-      })
-      const responseData = await response.json();
-    
-      if (response.status == '400'){
-        _showErrors(responseData.error)
-      } else if (response.status == '200') {
-        _showSuccess(`Feedback received - Thank you!`)
-      }
+  // submit the form over API 
+  submitForm : async (form) => {
+    const formData = _getFormData(form);
+    // post the data to the contactus API
+    const response = await fetch(config.contactUsAPI, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      body: JSON.stringify({ ...config.siteKey, ...formData })
     })
+    const responseData = await response.json();
+  
+    if (response.status == '400'){
+      _showErrors(responseData.error)
+    } else if (response.status == '200') {
+      _showSuccess(`Feedback received - Thank you!`)
+    }
+
   }
 }
 
@@ -72,11 +44,9 @@ function _clearFeedback (form) {
 function _getFormData (form) {
   const inputFields = form.getElementsByTagName('input');
   const textareaFields = form.getElementsByTagName('textarea');
-  const formData = [...inputFields, ...textareaFields].reduce((fd, item) => {
+  return [...inputFields, ...textareaFields].reduce((fd, item) => {
     return {[item.name]: item.value, ...fd}}, {}
   )
-  const [_, errors] = validateFormData(formData, expectedFormData);
-  return [formData, errors];
 }
 
 function _showErrors (error) {

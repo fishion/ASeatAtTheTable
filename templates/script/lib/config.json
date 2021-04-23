@@ -1,0 +1,21 @@
+{
+  "recaptcha2-site-secret" : "6LdOWmkaAAAAAAXH3BvOKcI2wrq53-qq3bjtSR2s",
+  "contactUsAPI" : "https://api.maytreehousestudios.co.uk/contact-us",
+  "siteKey" : "aseatatthetable",
+  "expectedFormData" : [
+    { "name" : "name",
+      "niceName" : "Name" },
+    { "name" : "email",
+      "niceName" : "Email",
+      "validation" : {
+        "type" : "email",
+        "error" : "Please enter a valid Email Address"
+      },
+      "required" : "No email address provided" },
+    { "name" : "whereHear",
+      "niceName" : "Where did you hear about us" },
+    { "name" : "comment",
+      "niceName" : "Comment",
+      "required" : "No comment provided"}
+  ]
+}
