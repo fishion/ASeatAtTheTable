@@ -2,8 +2,8 @@
 const path = require('path');
 module.exports = {
   entry: {
-    site : './templates/script/site.js',
-    formevents : './templates/script/formevents.js',
+    site : './src/script/site.js',
+    formevents : './src/script/formevents.js',
   },
   mode: 'development', devtool: false,
   //mode: 'production',

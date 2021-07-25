@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./templates/script/lib/config.json":
-/*!******************************************!*\
-  !*** ./templates/script/lib/config.json ***!
-  \******************************************/
+/***/ "./src/script/lib/config.json":
+/*!************************************!*\
+  !*** ./src/script/lib/config.json ***!
+  \************************************/
 /***/ ((module) => {
 
 "use strict";
@@ -12,14 +12,14 @@ module.exports = JSON.parse('{"recaptcha2-site-secret":"6LdOWmkaAAAAAAXH3BvOKcI2
 
 /***/ }),
 
-/***/ "./templates/script/lib/contact-form-events.js":
-/*!*****************************************************!*\
-  !*** ./templates/script/lib/contact-form-events.js ***!
-  \*****************************************************/
+/***/ "./src/script/lib/contact-form-events.js":
+/*!***********************************************!*\
+  !*** ./src/script/lib/contact-form-events.js ***!
+  \***********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const validateFormData  = __webpack_require__(/*! ./validate-form-data.js */ "./templates/script/lib/validate-form-data.js")
-const config = __webpack_require__(/*! ./config.json */ "./templates/script/lib/config.json");
+const validateFormData  = __webpack_require__(/*! ./validate-form-data.js */ "./src/script/lib/validate-form-data.js")
+const config = __webpack_require__(/*! ./config.json */ "./src/script/lib/config.json");
 
 module.exports = {
 
@@ -99,10 +99,10 @@ function _feedbackElement (message, type) {
 
 /***/ }),
 
-/***/ "./templates/script/lib/validate-form-data.js":
-/*!****************************************************!*\
-  !*** ./templates/script/lib/validate-form-data.js ***!
-  \****************************************************/
+/***/ "./src/script/lib/validate-form-data.js":
+/*!**********************************************!*\
+  !*** ./src/script/lib/validate-form-data.js ***!
+  \**********************************************/
 /***/ ((module) => {
 
 module.exports = (data, expectedData) => {
@@ -160,22 +160,12 @@ module.exports = (data, expectedData) => {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!****************************************!*\
-  !*** ./templates/script/formevents.js ***!
-  \****************************************/
+/*!**********************************!*\
+  !*** ./src/script/formevents.js ***!
+  \**********************************/
 // Add events to contact us form
-const formEvents = __webpack_require__(/*! ./lib/contact-form-events.js */ "./templates/script/lib/contact-form-events.js");
-const config = __webpack_require__(/*! ./lib/config.json */ "./templates/script/lib/config.json");
-
-  // add recapture element - called by google script
-  function addRecaptcha() {
-    const recapture_div = document.createElement('div');
-    form.appendChild(recapture_div)
-    grecaptcha.render(recapture_div, {
-      'sitekey' : config['recaptcha2-site-secret'],
-      'callback' : formEvents.submitForm
-    });
-  }
+const formEvents = __webpack_require__(/*! ./lib/contact-form-events.js */ "./src/script/lib/contact-form-events.js");
+const config = __webpack_require__(/*! ./lib/config.json */ "./src/script/lib/config.json");
 
 const form = document.getElementsByTagName('form')[0];
 if (form){
@@ -192,7 +182,13 @@ if (form){
     }
   });
 
-
+  // add recapture element
+  const recapture_div = document.createElement('div');
+  recapture_div.classList.add("g-recaptcha");
+  recapture_div.setAttribute("data-sitekey", config['recaptcha2-site-secret'])
+  recapture_div.setAttribute("data-callback", formEvents.submitForm)
+  recapture_div.setAttribute("data-size", "invisible")
+  form.appendChild(recapture_div)
 
   // add form submit
   form.getElementsByTagName('button')[0]

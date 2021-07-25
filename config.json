@@ -1,4 +1,10 @@
 {
+  "paths" : {
+    "controllerPath"  : "src/controller",
+    "pagesPath"       : "src/view/page",
+    "wrappersPath"    : "src/view/partials/wrappers",
+    "includesPath"    : "src/view/partials/includes"
+  },
   "site" : {
     "title"       : "A Seat At The Table",
     "url"         : "https://aseatatthetable.org.uk",

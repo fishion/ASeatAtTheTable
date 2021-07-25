@@ -3,9 +3,11 @@
 
 const path = require('path');
 const appRoot = path.resolve(__dirname, '..');
+const config = require(path.resolve(appRoot, 'config.json'));
+
 const Handlebars = require('HandlebarsExtended')({
-  appRoot : appRoot
+  appRoot : appRoot,
+  ...config.paths
 });
 
-const config = require(path.resolve(appRoot, 'config.json'));
 Handlebars.buildSite(config)

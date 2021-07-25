@@ -1,8 +1,8 @@
 /******/ (() => { // webpackBootstrap
 var __webpack_exports__ = {};
-/*!**********************************!*\
-  !*** ./templates/script/site.js ***!
-  \**********************************/
+/*!****************************!*\
+  !*** ./src/script/site.js ***!
+  \****************************/
 // Add events for slideout menu
 // load script with defer attribute to ensure DOM is loaded before execution
 

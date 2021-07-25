@@ -9,14 +9,15 @@
     "url": "git+https://github.com/fishion/ASeatAtTheTable.git"
   },
   "main": "bin/build.js",
-  "dependencies": {},
   "devDependencies": {
     "handlebarsextended": "git+https://github.com/fishion/HandlebarsExtended.git",
+    "onchange": "^7.1.0",
     "serve": "^11.3.2",
     "webpack": "^5.22.0",
     "webpack-cli": "^4.5.0"
   },
   "scripts": {
+    "onchange": "onchange src/**/*.hbs src/**/*.js src/sass/*.scss src/data/*.json -- npm run build",
     "build": "./bin/build.js; webpack",
     "serve": "serve docs"
   }
