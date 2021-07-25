@@ -17,7 +17,7 @@
     "webpack-cli": "^4.5.0"
   },
   "scripts": {
-    "onchange": "onchange src/**/*.hbs src/**/*.js src/sass/*.scss src/data/*.json -- npm run build",
+    "onchange": "onchange 'src/**/*.hbs' 'src/**/*.js' 'src/**/*.scss' 'src/**/*.json' -- npm run build",
     "build": "./bin/build.js; webpack",
     "serve": "serve docs"
   }
