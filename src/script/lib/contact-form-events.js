@@ -4,12 +4,14 @@ const config = require('./config.json');
 module.exports = {
 
   // Form validation and recaptcha call
-  validateAndCaptcha : (form) => {
+  validate : (form) => {
     _clearFeedback(form);
     const [_, errors] = validateFormData(_getFormData(form), config.expectedFormData)
-    if (Object.keys(errors).length) return _showErrors(errors);
-
-    grecaptcha.execute();
+    if (Object.keys(errors).length) {
+      _showErrors(errors);
+      return false;
+    }
+    return true;
   },
 
   // submit the form over API 
@@ -21,7 +23,7 @@ module.exports = {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
-      body: JSON.stringify({ ...config.siteKey, ...formData })
+      body: JSON.stringify({ siteKey : config.siteKey, ...formData })
     })
     const responseData = await response.json();
   
@@ -30,7 +32,9 @@ module.exports = {
     } else if (response.status == '200') {
       _showSuccess(`Feedback received - Thank you!`)
     }
-
+    
+    grecaptcha.reset(); // Reset reCaptcha
+  
   }
 }
 

@@ -24,12 +24,14 @@ const config = __webpack_require__(/*! ./config.json */ "./src/script/lib/config
 module.exports = {
 
   // Form validation and recaptcha call
-  validateAndCaptcha : (form) => {
+  validate : (form) => {
     _clearFeedback(form);
     const [_, errors] = validateFormData(_getFormData(form), config.expectedFormData)
-    if (Object.keys(errors).length) return _showErrors(errors);
-
-    grecaptcha.execute();
+    if (Object.keys(errors).length) {
+      _showErrors(errors);
+      return false;
+    }
+    return true;
   },
 
   // submit the form over API 
@@ -41,7 +43,7 @@ module.exports = {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
-      body: JSON.stringify({ ...config.siteKey, ...formData })
+      body: JSON.stringify({ siteKey : config.siteKey, ...formData })
     })
     const responseData = await response.json();
   
@@ -50,7 +52,9 @@ module.exports = {
     } else if (response.status == '200') {
       _showSuccess(`Feedback received - Thank you!`)
     }
-
+    
+    grecaptcha.reset(); // Reset reCaptcha
+  
   }
 }
 
@@ -165,11 +169,33 @@ var __webpack_exports__ = {};
   \**********************************/
 // Add events to contact us form
 const formEvents = __webpack_require__(/*! ./lib/contact-form-events.js */ "./src/script/lib/contact-form-events.js");
+
 const config = __webpack_require__(/*! ./lib/config.json */ "./src/script/lib/config.json");
-
 const form = document.getElementsByTagName('form')[0];
-if (form){
 
+window.reCaptchaInit = () => {
+  const recapture_div = document.createElement('div');
+  recapture_div.classList.add("g-recaptcha");
+  form.appendChild(recapture_div)
+
+  var holderId = grecaptcha.render(recapture_div,{
+    'sitekey': config['recaptcha2-site-secret'],
+    'size': 'invisible',
+    'badge' : 'inline', // possible values: bottomright, bottomleft, inline
+    'callback' : function () {
+      formEvents.submitForm(form)
+    }
+  });
+
+  // add form submit
+  form.getElementsByTagName('button')[0]
+  .addEventListener('click', () => {
+    formEvents.validate(form) && grecaptcha.execute(holderId);
+  })
+};
+
+
+if (form){
   // Add class to input/testarea element on keyup if the value
   // contains any non-whitespace characters.
   // Could do this all in CSS with pseudo selector "input:valid"
@@ -181,18 +207,6 @@ if (form){
       e.target.classList.remove('hascontent')
     }
   });
-
-  // add recapture element
-  const recapture_div = document.createElement('div');
-  recapture_div.classList.add("g-recaptcha");
-  recapture_div.setAttribute("data-sitekey", config['recaptcha2-site-secret'])
-  recapture_div.setAttribute("data-callback", formEvents.submitForm)
-  recapture_div.setAttribute("data-size", "invisible")
-  form.appendChild(recapture_div)
-
-  // add form submit
-  form.getElementsByTagName('button')[0]
-  .addEventListener('click', () => {formEvents.validateAndCaptcha(form)})
 }
 })();
 
