@@ -16,15 +16,37 @@ module.exports = JSON.parse('{"recaptcha2-site-secret":"6LdOWmkaAAAAAAXH3BvOKcI2
 /*!***********************************************!*\
   !*** ./src/script/lib/contact-form-events.js ***!
   \***********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 const validateFormData  = __webpack_require__(/*! ./validate-form-data.js */ "./src/script/lib/validate-form-data.js")
-const config = __webpack_require__(/*! ./config.json */ "./src/script/lib/config.json");
 
-module.exports = {
+module.exports = (form, config) => {
+  // hooks for additional behaviour
+  this.afterValidate = () => {}
+  this.afterSubmit = () => {}
 
-  // Form validation and recaptcha call
-  validate : (form) => {
+  // Add class to input/testarea element on keyup if the value
+  // contains any non-whitespace characters.
+  // Could do this all in CSS with pseudo selector "input:valid"
+  // if all fields are required https://css-tricks.com/float-labels-css/
+  form.addEventListener('keyup', e => {
+    if (e.target.value.match(/[^\s]/)) {
+      e.target.classList.add('hascontent')
+    } else {
+      e.target.classList.remove('hascontent')
+    }
+  });
+
+  // add form submit behaviour
+  function addSubmit(aftervalidate) {
+    form.getElementsByTagName('button')[0]
+    .addEventListener('click', () => {
+      this.validate() && this.afterValidate()
+    })
+  }
+
+  // Form validation
+  function validate() {
     _clearFeedback(form);
     const [_, errors] = validateFormData(_getFormData(form), config.expectedFormData)
     if (Object.keys(errors).length) {
@@ -32,10 +54,10 @@ module.exports = {
       return false;
     }
     return true;
-  },
+  }
 
   // submit the form over API 
-  submitForm : async (form) => {
+  async function submitForm() {
     const formData = _getFormData(form);
     // post the data to the contactus API
     const response = await fetch(config.contactUsAPI, {
@@ -51,55 +73,101 @@ module.exports = {
       _showErrors(responseData.error)
     } else if (response.status == '200') {
       _showSuccess(`Feedback received - Thank you!`)
+      _clearForm();
     }
     
-    grecaptcha.reset(); // Reset reCaptcha
-  
+    this.afterSubmit()
   }
-}
 
+  function _clearFeedback () {
+    const errorTexts = form.getElementsByClassName('error');
+    const successTexts = form.getElementsByClassName('success');
+    [...errorTexts, ...successTexts].forEach(el => {el.remove()});
+  }
 
-function _clearFeedback (form) {
-  const errorTexts = form.getElementsByClassName('error');
-  const successTexts = form.getElementsByClassName('success');
-  [...errorTexts, ...successTexts].forEach(el => {el.remove()});
-}
+  function _getFormData () {
+    const inputFields = form.getElementsByTagName('input');
+    const textareaFields = form.getElementsByTagName('textarea');
+    return [...inputFields, ...textareaFields].reduce((fd, item) => {
+      return {[item.name]: item.value, ...fd}}, {}
+    )
+  }
 
-function _getFormData (form) {
-  const inputFields = form.getElementsByTagName('input');
-  const textareaFields = form.getElementsByTagName('textarea');
-  return [...inputFields, ...textareaFields].reduce((fd, item) => {
-    return {[item.name]: item.value, ...fd}}, {}
-  )
-}
-
-function _showErrors (error) {
-  if (typeof error === 'string') {
-    document.getElementById('form_generalError')
-      .appendChild(_feedbackElement(`Error : ${error}`, 'error'))
-  } else {
-    document.getElementById('form_generalError')
-      .appendChild(_feedbackElement('Please check errors below', 'error'))
-    Object.keys(error).forEach(field => {
-      document.getElementById(`formField_${field}`)
-        .appendChild(_feedbackElement(error[field], 'error'))
+  function _clearForm () {
+    const inputFields = form.getElementsByTagName('input');
+    const textareaFields = form.getElementsByTagName('textarea');
+    [...inputFields, ...textareaFields].forEach(el => {
+      el.value = '';
     })
   }
+
+  function _showErrors (error) {
+    if (typeof error === 'string') {
+      document.getElementById('form_generalError')
+        .appendChild(_feedbackElement(`Error : ${error}`, 'error'))
+    } else {
+      document.getElementById('form_generalError')
+        .appendChild(_feedbackElement('Please check errors below', 'error'))
+      Object.keys(error).forEach(field => {
+        document.getElementById(`formField_${field}`)
+          .appendChild(_feedbackElement(error[field], 'error'))
+      })
+    }
+  }
+
+  function _showSuccess (message) {
+    document.getElementById('form_generalError')
+      .appendChild(_feedbackElement(message, 'success'))
+  }
+
+  function _feedbackElement (message, type) {
+    const p = document.createElement('p');
+    if (type) p.classList.add(type);
+    p.textContent = message;
+    return p;
+  }
+
+  return {
+    addSubmit   : addSubmit,
+    validate    : validate,
+    submitForm  : submitForm
+  }
 }
 
-function _showSuccess (message) {
-  document.getElementById('form_generalError')
-    .appendChild(_feedbackElement(message, 'success'))
+
+
+
+
+/***/ }),
+
+/***/ "./src/script/lib/recaptcha-events.js":
+/*!********************************************!*\
+  !*** ./src/script/lib/recaptcha-events.js ***!
+  \********************************************/
+/***/ ((module) => {
+
+module.exports = (form, secret) => {
+
+  function addRecaptcha(callback) {
+    const recapture_div = document.createElement('div');
+    recapture_div.classList.add("g-recaptcha");
+    form.appendChild(recapture_div)
+
+    const recaptchaId = grecaptcha.render(recapture_div,{
+      'sitekey': secret,
+      'size': 'invisible',
+      'badge' : 'inline', // possible values: bottomright, bottomleft, inline
+      'callback' : callback
+    });
+    return recaptchaId;
+  }
+
+
+  return {
+    addRecaptcha: addRecaptcha
+  }
+
 }
-
-function _feedbackElement (message, type) {
-  const p = document.createElement('p');
-  if (type) p.classList.add(type);
-  p.textContent = message;
-  return p;
-}
-
-
 
 /***/ }),
 
@@ -154,7 +222,7 @@ module.exports = (data, expectedData) => {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -167,47 +235,29 @@ var __webpack_exports__ = {};
 /*!**********************************!*\
   !*** ./src/script/formevents.js ***!
   \**********************************/
-// Add events to contact us form
-const formEvents = __webpack_require__(/*! ./lib/contact-form-events.js */ "./src/script/lib/contact-form-events.js");
-
-const config = __webpack_require__(/*! ./lib/config.json */ "./src/script/lib/config.json");
 const form = document.getElementsByTagName('form')[0];
 
-window.reCaptchaInit = () => {
-  const recapture_div = document.createElement('div');
-  recapture_div.classList.add("g-recaptcha");
-  form.appendChild(recapture_div)
-
-  var holderId = grecaptcha.render(recapture_div,{
-    'sitekey': config['recaptcha2-site-secret'],
-    'size': 'invisible',
-    'badge' : 'inline', // possible values: bottomright, bottomleft, inline
-    'callback' : function () {
-      formEvents.submitForm(form)
-    }
-  });
-
-  // add form submit
-  form.getElementsByTagName('button')[0]
-  .addEventListener('click', () => {
-    formEvents.validate(form) && grecaptcha.execute(holderId);
-  })
-};
+const config = __webpack_require__(/*! ./lib/config.json */ "./src/script/lib/config.json");
+const formEvents = __webpack_require__(/*! ./lib/contact-form-events.js */ "./src/script/lib/contact-form-events.js")(form, config);
+const recaptchaEvents = __webpack_require__(/*! ./lib/recaptcha-events.js */ "./src/script/lib/recaptcha-events.js")(form, config['recaptcha2-site-secret']);
 
 
-if (form){
-  // Add class to input/testarea element on keyup if the value
-  // contains any non-whitespace characters.
-  // Could do this all in CSS with pseudo selector "input:valid"
-  // if all fields are required https://css-tricks.com/float-labels-css/
-  form.addEventListener('keyup', e => {
-    if (e.target.value.match(/[^\s]/)) {
-      e.target.classList.add('hascontent')
-    } else {
-      e.target.classList.remove('hascontent')
-    }
-  });
+// can't fire this until recaptcha script is fully loaded and ready
+window.initForm = () => {
+  const recaptchaId = recaptchaEvents.addRecaptcha(
+    () => {formEvents.submitForm()}
+  )
+
+  formEvents.afterValidate = () => {
+    grecaptcha.execute(recaptchaId);
+  }
+  formEvents.afterSubmit = () => {
+    grecaptcha.reset(); // Reset reCaptcha
+  }
+  formEvents.addSubmit();
+
 }
+
 })();
 
 /******/ })()
