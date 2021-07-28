@@ -3,7 +3,10 @@
     "controllerPath"  : "src/controller",
     "pagesPath"       : "src/view/page",
     "wrappersPath"    : "src/view/partials/wrappers",
-    "includesPath"    : "src/view/partials/includes"
+    "includesPath"    : "src/view/partials/includes",
+    "sassInputPath"   : "src/sass",
+    "sassOutputPath"  : "docs/css",
+    "sassFiles"       : ["main", "normalize"]
   },
   "site" : {
     "title"       : "A Seat At The Table",

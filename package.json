@@ -2,7 +2,7 @@
   "name": "aseatatthetable",
   "description": "A website for https://aseatatthetable.org.uk/",
   "version": "1.0.0",
-  "author": "A Monney",
+  "author": "Maytree House Studios",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
   "devDependencies": {
     "handlebarsextended": "git+https://github.com/fishion/HandlebarsExtended.git",
     "onchange": "^7.1.0",
+    "sass": "^1.36.0",
     "serve": "^11.3.2",
     "webpack": "^5.22.0",
     "webpack-cli": "^4.5.0"
