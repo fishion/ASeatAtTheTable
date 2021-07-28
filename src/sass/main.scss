@@ -291,41 +291,16 @@ details {
     position: absolute;
     width: 100%;
     bottom: 0;
-    list-style-image: none;
     color: var(--highlight-colour);
     outline: none;
     cursor: pointer;
     overflow: hidden;
-    &::-webkit-details-marker {
-      background: none;
-      color: transparent;
-    }
-    &::before,
-    &::after {
-      display: inline-block;
-      position: absolute;
-      left:0; right:0;
-      opacity: 0;
-      transition: all .4s ease-in-out;
-    }
     &::before {
       content: attr(data-close);
-      top: -2em;
-    }
-    &::after {
-      content: attr(data-open);
-      top: 2em;
     }
   }
-  &:not([open]) summary::before {
-    content: attr(data-close);
-    opacity: 1;
-    top: 0;
-  }
-  &[open] summary::after {
+  &[open] summary::before {
     content: attr(data-open);
-    opacity: 1;
-    top: 0;
   }
 }
 
